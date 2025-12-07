@@ -1,0 +1,6 @@
+c Small negative example: C4 (cycle of length 4), max clique size = 2
+p edge 4 4
+e 1 2
+e 2 3
+e 3 4
+e 4 1

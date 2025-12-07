@@ -1,0 +1,5 @@
+c Small positive example: K3 on vertices {1,2,3}
+p edge 4 3
+e 1 2
+e 1 3
+e 2 3
