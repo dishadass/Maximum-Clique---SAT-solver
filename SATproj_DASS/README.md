@@ -58,7 +58,7 @@ If no specific k is given, the script performs a simple **incremental search**:
 3. Call Glucose on the corresponding CNF.
 4. Stop at the first k for which the SAT instance is **unsatisfiable**.
 
-The largest k for which the SAT instance was satisfiable is then reported as the **maximum clique size** ω(G) for that graph (and the script also prints an example clique of that size).
+The largest k for which the SAT instance was satisfiable is then reported as the **maximum clique size** ω(G) for that graph.
 
 
 ### 1.4 Instance parameters and constraints
@@ -77,18 +77,15 @@ Each instance of the problem is determined by the following parameters.
   ```text
   e u v
   ```
-  where 1 ≤ u, v ≤ n. The graph is assumed to be:
-  - **undirected**: the edge {u, v} is the same as {v, u},
-  - **simple**: no self-loops (`u = v` lines are ignored) and no multiple edges.
+  where 1 ≤ u, v ≤ n. 
 
 - **Clique size parameter** k (for the decision version)  
   Given on the command line via:
   ```bash
   -k K
   ```
-  with the intended range 1 ≤ k ≤ n.  
-  The script interprets this as: “find a clique of exactly size k”.  
-  If `k` is omitted, the script starts from k = 1 and increases k until UNSAT is reached (maximum clique search).
+  with the intended range 1 ≤ k ≤ n.   
+  If `k` is omitted, the script starts from k = 1 and increases k until UNSAT is reached.
 
 
 
@@ -103,8 +100,6 @@ For the **k-clique decision problem**, a valid solution must satisfy all of:
    The selected vertices form a clique:
 
    > for all u, v in C, with u ≠ v, we have {u, v} in E.
-
-For the **maximum clique search**, the same constraints apply for each tested value of k; the script keeps increasing k until these constraints can no longer be satisfied (the SAT instance becomes UNSAT). The last satisfiable k is then reported as the maximum clique size found.
 
 
 ## 2. CNF Encoding
@@ -186,7 +181,7 @@ for p in range(k):
         cnf.append([-at_var_id(u, p, k), -at_var_id(v, p, k), 0])
 ```
 
-This enforces **uniqueness** per position.
+This makes sure there is **uniqueness** per position.
 
 #### (3) Each vertex appears in at most one position
 
@@ -319,7 +314,7 @@ Options:
 
 ### 3.4 Modes of operation
 
-#### Fixed k-clique mode
+#### Fixed k-clique 
 
 Example: small positive instance, k = 3
 
@@ -342,7 +337,7 @@ Output (simplified):
   Vertices in the clique: [1, 2, 3]
   ```
 
-#### Maximum clique mode
+#### Maximum clique 
 
 If `-k` is omitted, the script tries k = 1, 2, … up to `N_VERTICES`:
 
@@ -356,9 +351,7 @@ python3 clique_sat.py \
 It prints for each k whether SAT (and the clique found).  
 On the first UNSAT, it reports the maximum clique size and one corresponding clique.
 
-Note: this can be expensive on large graphs, since it runs multiple SAT instances.
 
----
 
 ## 4. Description of Attached Instances
 
@@ -375,7 +368,7 @@ Experiment (k = 3):
 - Clique: `[1, 2, 3]`  
 - Glucose CPU time: ~0.0008 s  
 
-This serves as a small, human-readable **satisfiable** test instance.
+This is a  small  **satisfiable** test instance.
 
 ### 4.2 `small_neg.clq`
 
@@ -390,7 +383,7 @@ Experiment (k = 3):
 - Glucose reports "Solved by simplification".  
 - Glucose CPU time: ~0.0008 s  
 
-This is our small, human-readable **unsatisfiable** test instance.
+This is our small **unsatisfiable** test instance.
 
 ### 4.3 `brock200_2.clq`
 
@@ -430,23 +423,6 @@ Results:
   - `user`: ~32.1 s  
   - `sys`: ~0.36 s  
 
-This is our **nontrivial satisfiable instance**.
-
----
-
-## 5. Experimental Report
-
-All experiments were run on a Mac laptop (macOS, Python 3.14, Glucose 4.2.1).
-
-### 5.1 Summary of experiments
-
-| Instance       | n (vertices)    | k  | Vars  | Clauses   | Result | Glucose CPU time |
-|----------------|-----------------|----|-------|-----------|--------|------------------|
-| `small_pos`    | small (toy)     | 3  | 12    | 51        | SAT    | ~0.0008 s        |
-| `small_neg`    | small (toy)     | 3  | 12    | 45        | UNSAT  | ~0.0008 s        |
-| `brock200_2`   | 200             | 12 | 2400  | 1,575,180 | SAT    | ~31.5 s          |
-
-Small instances are solved essentially instantly.  
-The `brock200_2` instance demonstrates that the encoding and Glucose can handle a 200-vertex benchmark graph with a nontrivial clique size (12) in about half a minute.
+This is the **nontrivial satisfiable instance**.
 
 
